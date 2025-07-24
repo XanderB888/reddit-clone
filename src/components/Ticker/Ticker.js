@@ -8,7 +8,10 @@ function Ticker() {
         'Shooting with a .50 calibre rifle',
         'Making microvawe cake in 5 mins... what!?',
         'What\'s a lifehack that isn\'t obvious?',
-        'Just finished FarCry 4... All time favourite game!'
+        'Just finished FarCry 4! All time favourite game!',
+        'Scrolling effects are super fun!',
+        'Debates spark as US and Russia discuss nuclear power plants in the ocean.',
+        'AI is slowly taking over and it is not neccesarily a bad thing.'
     ];
 
     return (
