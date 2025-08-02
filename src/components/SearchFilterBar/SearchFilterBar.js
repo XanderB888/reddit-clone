@@ -17,11 +17,11 @@ function SearchFilterBar({ searchTerm, setSearchTerm, filterCategory, setFilterC
                 onChange={(e) => setFilterCategory(e.target.value)}
                 >
                 <option value="">All Categories</option>
-                <option value="">Funny</option>
-                <option value="">News</option>
-                <option value="">Gaming</option>
-                <option value="">Aww</option>
-                <option value="">AskReddit</option>
+                <option value="funny">Funny</option>
+                <option value="news">News</option>
+                <option value="gaming">Gaming</option>
+                <option value="aww">Aww</option>
+                <option value="askreddit">AskReddit</option>
             </select>
         </div>
     );
