@@ -1,5 +1,5 @@
 import React from 'react';
-import '../PostList.css';
+import './PostList.css';
 import PostCard from '../PostCard/PostCard';
 
 function PostList () {
