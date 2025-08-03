@@ -17,3 +17,5 @@ function PostCard({ post }) {
     </div>
   );
 }
+
+export default PostCard;
