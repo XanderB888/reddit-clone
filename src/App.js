@@ -1,8 +1,17 @@
 import React from 'react';
-import HomePage from './pages/Home/HomePage';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage/HomePage';
+import PostDetail from './pages/PostDetail/PostDetail';
 
 function App() {
-  return <HomePage />
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/post/:id" element={<PostDetail />} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;
