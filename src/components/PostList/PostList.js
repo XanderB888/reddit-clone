@@ -29,6 +29,14 @@ function PostList ({ searchTerm, filterCategory }) {
             comments: 44,
             score: 108,
         },
+        {
+            id:4,
+            title: 'Ultimate Fails of 2025 July',
+            subreddit: 'funny',
+            author: 'UF Guy',
+            comments: 288,
+            score: 333,
+        }
     ];
 
     const filteredPosts = mockPosts.filter((post) => {
