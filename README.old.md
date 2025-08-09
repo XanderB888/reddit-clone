@@ -22,6 +22,7 @@ The aim of this project is to re-create Reddit from scratch using React and Redu
 - React Router
 - Jest
 - Enzyme "Jest"
+- Axios
 
 ## Features
 - Browse posts
