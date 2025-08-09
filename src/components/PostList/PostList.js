@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setPosts } from '../../features/posts/postsSlice';
 import './PostList.css';
 import PostCard from '../PostCard/PostCard';
 
-function PostList ({ searchTerm, filterCategory }) {
-    //Temp mock data
+function PostList () {
+    const dispatch = useDispatch();
+    const posts = useSelector((state) => state.posts.items);
+    
+    useEffect(() => {
+        //Temp mock posts untill I connect the Reddit API
     const mockPosts = [
         {
             id:1,
@@ -39,19 +45,14 @@ function PostList ({ searchTerm, filterCategory }) {
         }
     ];
 
-    const filteredPosts = mockPosts.filter((post) => {
-        const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase());
-        const mathesCategory = filterCategory === '' || post.subreddit === filterCategory;
-        return matchesSearch && mathesCategory;
-    });
+    dispatch(setPosts(mockPosts));
+    }, [dispatch]);   
 
     return (
         <div className='post-list'>
-            {filteredPosts.length > 0 ? (
-                filteredPosts.map((post) => <PostCard key={post.id} post={post} />) 
-            ) : (
-                <p>No posts match your criteria.</p>
-            )}
+            {posts.map((post) => (
+                <PostCard key={post.id} post={post} />
+            ))}
         </div>
     );
 }
