@@ -1,20 +1,43 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
-const initialState = {
-    items: [], //List of posts
-    status: 'idle', //idle | loading | succeeded | failed
-    error: null
-};
+export const fetchPosts = createAsyncThunk(
+    'posts/fetchPosts',
+    async (subreddit = 'popular') => {
+        const response = await axios.get(`https://www.reddit.com/r/${subreddit}.json`);
+        return response.data.data.children.map((child) => ({
+            id: child.data.id,
+            title: child.data.title,
+            subreddit: child.data.subreddit,
+            author: child.data.author,
+            comments: child.data.num_comments,
+            score: child.data.score,
+        }));
+    }
+);
 
 const postsSlice = createSlice({
     name: 'posts',
-    initialState,
-    reducers: {
-        setPosts(state, action) {
+    initialState: {
+        items: [],
+        status: 'idle',
+        error: null
+    },
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+        .addCase(fetchPosts.pending, (state) => {
+            state.status = 'loading';
+        })
+        .addCase(fetchPosts.fulfilled, (state, action) => {
+            state.status = 'succeeded';
             state.items = action.payload;
-        }
+        })
+        .addCase(fetchPosts.rejected, (state, action) => {
+            state.status = 'failed';
+            state.error = action.error.message;
+        });
     }
 });
 
-export const { setPosts } = postsSlice.actions;
 export default postsSlice.reducer;
