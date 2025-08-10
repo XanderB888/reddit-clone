@@ -4,7 +4,13 @@ import axios from "axios";
 export const fetchPosts = createAsyncThunk(
     'posts/fetchPosts',
     async (subreddit = 'popular') => {
-        const response = await axios.get(`https://www.reddit.com/r/${subreddit}.json`);
+        const response = await axios.get(
+            `https://cors-anywhere.herokuapp.com/https://www.reddit.com/r/${subreddit}.json`,
+        {
+            headers: { 'X-Requested-With': 'XMLHttpRequest'}
+        }
+        );
+        
         return response.data.data.children.map((child) => ({
             id: child.data.id,
             title: child.data.title,
