@@ -4,28 +4,11 @@ import axios from "axios";
 export const fetchPosts = createAsyncThunk(
     'posts/fetchPosts',
     async (subreddit = 'popular') => {
-        try {
-            const response = await axios.get(
-                `https://cors-anywhere.herokuapp.com/https://www.reddit.com/r/${subreddit}.json`,
-                {
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                }
-            );
-
-            return response.data.data.children.map((child) => ({
-                id: child.data.id,
-                title: child.data.title,
-                subreddit: child.data.subreddit,
-                author: child.data.author,
-                comments: child.data.num_comments,
-                score: child.data.score,
-            }));
-        } catch (error) {
-            console.error('Error fetching posts:', error);
-            throw error; // So Redux knows it failed
-        }
+        const response = await axios.get(`http://localhost:5000/api/posts/${subreddit}`);
+        return response.data;
     }
 );
+
 
 const postsSlice = createSlice({
     name: 'posts',
