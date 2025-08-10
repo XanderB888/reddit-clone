@@ -23,6 +23,7 @@ The aim of this project is to re-create Reddit from scratch using React and Redu
 - Jest
 - Enzyme "Jest"
 - Axios
+- Express "node fetch"
 
 ## Features
 - Browse posts
