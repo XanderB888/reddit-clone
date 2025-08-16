@@ -1,31 +1,33 @@
+require('dotenv').config();
 const express = require('express');
 const fetch = require('node-fetch');
 const cors = require('cors');
 
 const app = express();
-const PORT = 5000;
-
 app.use(cors()); // Allow all orgigins
 
-//API endpoint to get Reddit posts
-app.get('/api/posts/:subreddit', async (requestAnimationFrame, res) => {
-    const { subreddit } = requestAnimationFrame.params;
+const r = new snoowrap({
+    userAgent: 'Reddit Clone Portfolio App',
+    clientId: process.env.n39afMJTG-Gpw3-EJZjF4A,
+    clientSecret: process.env.Q_T5I8s4ppg0xzA-Q20w2nU8O_KHIg,
+    refreshToken: process.env.REDDIT_REFRESH_TOKEN
+});
+
+//Example endpoint to get Reddit posts
+app.get('/api/posts/:subreddit', async (req, res) => {
     try {
-        const response = await fetch(`https://www.reddit.com/r/${subreddit}.json`);
-        const data = await response.json();
-
-        const posts = data.data.children.map((child) => ({
-            id: child.data.id,
-            title: child.data.title,
-            subreddit: child.data.subreddit,
-            author: child.data.author,
-            comments: child.data.num_comments,
-            score: child.data.score,
-        }));
-
-        res.json(posts);
-    } catch (error) {
-        console.error('Error fetching posts', error);
+        const { subreddit } = req.params;
+        const posts = await r.getHot(subreddit, { limit:10 }); 
+        res.json(posts.map(p => ({
+            id: p.id,
+            title: p.title,
+            subreddit: p.subreddit.diplay_name,
+            author: p.author.name,
+            comments: p.num_comments,
+            score: p.score
+        })));
+    } catch (err) {
+        console.error(err);
         res.status(500).json({ error: 'Failed to fetch posts' });
     }
 });
