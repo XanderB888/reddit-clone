@@ -3,9 +3,12 @@ import axios from 'axios';
 
 export const fetchPosts = createAsyncThunk(
   'posts/fetchPosts',
-  async (subreddit = 'popular') => {
-    // Now fetching from my backend instead of Reddit directly
-    const response = await axios.get(`http://localhost:5000/api/posts`);
+  async (subreddit = '') => {
+    const url = subreddit
+    ? `ttp://localhost:5000/api/posts/${subreddit}`
+    : `http://localhost:5000/api/posts`;
+
+    const response = await axios.get(url);
     return response.data;
   }
 );
