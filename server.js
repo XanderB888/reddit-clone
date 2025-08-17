@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: 'sec.env' });
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
@@ -8,24 +8,30 @@ app.use(cors());
 
 const PORT = process.env.PORT || 5000;
 
+/**
+ * STEP 1: Redirect user to Reddit for authorization
+ */
 app.get('/auth/reddit', (req, res) => {
   const params = new URLSearchParams({
     client_id: process.env.REDDIT_CLIENT_ID,
     response_type: 'code',
-    state: 'random_string', // ideally generate securely
+    state: 'randomString123', // 🔒 should generate securely in production
     redirect_uri: process.env.REDDIT_REDIRECT_URI,
     duration: 'permanent',
-    scope: 'read identity'
+    scope: 'read identity',
   });
 
   res.redirect(`https://www.reddit.com/api/v1/authorize?${params.toString()}`);
 });
 
-app.get('/callback', async (req, res) => {
-  const { code } = req.query;
+/**
+ * STEP 2: Reddit redirects back here with ?code=...
+ */
+app.get('/auth/reddit/callback', async (req, res) => {
+  const code = req.query.code;
 
   if (!code) {
-    return res.status(400).send('No code provided');
+    return res.status(400).send('Missing authorization code');
   }
 
   try {
@@ -41,23 +47,25 @@ app.get('/callback', async (req, res) => {
           username: process.env.REDDIT_CLIENT_ID,
           password: process.env.REDDIT_CLIENT_SECRET,
         },
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       }
     );
 
     // Access & Refresh tokens from Reddit
-    console.log('Tokens:', response.data);
+    console.log('✅ Tokens:', response.data);
 
-    res.send('✅ Authorization successful! Check your terminal for tokens.');
+    res.send('Authorization successful! Check your terminal for tokens.');
   } catch (error) {
     console.error('OAuth Error:', error.response?.data || error.message);
     res.status(500).send('Error exchanging code');
   }
 });
 
+/**
+ * STEP 3: Example public API route (no OAuth yet)
+ */
 app.get('/api/posts', async (req, res) => {
   try {
-    // Just fetch public Reddit data (later we’ll use OAuth token)
     const response = await axios.get('https://www.reddit.com/r/popular.json');
     const posts = response.data.data.children.map((child) => ({
       id: child.data.id,
