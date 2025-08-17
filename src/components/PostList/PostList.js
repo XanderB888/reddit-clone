@@ -1,34 +1,35 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchPosts } from '../../features/posts/postsSlice';
-import './PostList.css';
 import PostCard from '../PostCard/PostCard';
+import './PostList.css';
 
-function PostList () {
-    const dispatch = useDispatch();
-    const { items: posts, status } = useSelector((state) => state.posts);
-    
-    useEffect(() => {
-        if (status === 'idle') {
-            dispatch(fetchPosts());
-        }
-    }, [status, dispatch]);
+function PostList({ posts, status }) {
+  const dispatch = useDispatch();
 
-    if (status === 'loading') {
-        return <p>Loading posts...</p>;
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchPosts());
     }
+  }, [status, dispatch]);
 
-    if (status === 'failed') {
-        return <p>Failed to load posts.</p>
-    }
-      
-    return (
-        <div className='post-list'>
-            {posts.map((post) => (
-                <PostCard key={post.id} post={post} />
-            ))}
-        </div>
-    );
+  if (status === 'loading') {
+    return <p>Loading posts...</p>;
+  }
+
+  if (status === 'failed') {
+    return <p>Failed to load posts.</p>;
+  }
+
+  return (
+    <div className="post-list">
+      {posts.length > 0 ? (
+        posts.map((post) => <PostCard key={post.id} post={post} />)
+      ) : (
+        <p>No posts match your criteria.</p>
+      )}
+    </div>
+  );
 }
 
 export default PostList;
