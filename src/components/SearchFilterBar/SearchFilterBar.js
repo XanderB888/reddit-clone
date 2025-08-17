@@ -1,7 +1,19 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchPosts } from '../../features/posts/postsSlice';
 import './SearchFilterBar.css';
 
 function SearchFilterBar({ searchTerm, setSearchTerm, filterCategory, setFilterCategory }) {
+    const dispatch = useDispatch();
+
+    const handleCategoryChange = (e) => {
+        const newCategory = e.target.value;
+        setFilterCategory(newCategory);
+
+        //Fetch post from the selected subreddit
+        dispatch(fetchPosts(newCategory));
+    };
+
     return (
         <div className='search-filter-bar'>
             <input
@@ -14,14 +26,17 @@ function SearchFilterBar({ searchTerm, setSearchTerm, filterCategory, setFilterC
             <select 
                 className='filter-dropdown'
                 value={filterCategory}
-                onChange={(e) => setFilterCategory(e.target.value)}
+                onChange={handleCategoryChange}
                 >
-                <option value="">All Categories</option>
-                <option value="funny">Funny</option>
-                <option value="news">News</option>
-                <option value="gaming">Gaming</option>
-                <option value="aww">Aww</option>
-                <option value="askreddit">AskReddit</option>
+                <option value="">Popular (All)</option>
+                <option value="funny">r/funny</option>
+                <option value="programming">r/programming</option>
+                <option value="gaming">r/gaming</option>
+                <option value="aww">r/aww</option>
+                <option value="news">r/news</option>
+                <option value="worldnews">r/worldnews</option>
+                <option value="technology">r/technology</option>
+                <option value="movies">r/movies</option>
             </select>
         </div>
     );
