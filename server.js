@@ -39,10 +39,10 @@ async function getAccessToken() {
     currentAccessToken = response.data.access_token;
     tokenExpiry = Date.now() + (50 * 60 * 1000);
     
-    console.log('🔑 Got fresh access token');
+    console.log('Got fresh access token');
     return currentAccessToken;
   } catch (error) {
-    console.error('❌ Error getting access token:', error.response?.data || error.message);
+    console.error('Error getting access token:', error.response?.data || error.message);
     throw error;
   }
 }
@@ -86,7 +86,7 @@ app.get('/auth/reddit/callback', async (req, res) => {
       }
     );
 
-    console.log('✅ Tokens:', response.data);
+    console.log('Tokens:', response.data);
     res.send('Authorization successful! Check your terminal for tokens.');
   } catch (error) {
     console.error('OAuth Error:', error.response?.data || error.message);
@@ -120,13 +120,14 @@ app.get('/api/posts', async (req, res) => {
         ? child.data.thumbnail : null,
       url: child.data.url,
       selftext: child.data.selftext,
-      created_utc: child.data.created_utc
+      created_utc: child.data.created_utc,
+      preview: child.data.preview || null
     }));
 
-    console.log(`📥 Fetched ${posts.length} posts from r/popular`);
+    console.log(`Fetched ${posts.length} posts from r/popular`);
     res.json(posts);
   } catch (error) {
-    console.error('❌ Error fetching posts:', error.response?.data || error.message);
+    console.error('Error fetching posts:', error.response?.data || error.message);
     res.status(500).json({ error: 'Failed to load posts' });
   }
 });
@@ -157,13 +158,14 @@ app.get('/api/posts/:subreddit', async (req, res) => {
         ? child.data.thumbnail : null,
       url: child.data.url,
       selftext: child.data.selftext,
-      created_utc: child.data.created_utc
+      created_utc: child.data.created_utc,
+      preview: child.data.preview || null
     }));
 
-    console.log(`📥 Fetched ${posts.length} posts from r/${subreddit}`);
+    console.log(`Fetched ${posts.length} posts from r/${subreddit}`);
     res.json(posts);
   } catch (error) {
-    console.error('❌ Error fetching posts:', error.response?.data || error.message);
+    console.error('Error fetching posts:', error.response?.data || error.message);
     res.status(500).json({ error: 'Failed to load posts' });
   }
 });
