@@ -6,13 +6,22 @@ import './SearchFilterBar.css';
 function SearchFilterBar({ searchTerm, setSearchTerm, filterCategory, setFilterCategory }) {
     const dispatch = useDispatch();
 
-    const handleCategoryChange = (e) => {
+   /* const handleCategoryChange = (e) => {
         const newCategory = e.target.value;
         setFilterCategory(newCategory);
 
         //Fetch post from the selected subreddit
         dispatch(fetchPosts(newCategory));
-    };
+    };*/
+
+    const handleCategoryChange = (e) => {
+  const newCategory = e.target.value;
+  alert(`Category changed to: ${newCategory}`); // 🚨 This should pop up!
+  console.log('🔄 SearchFilterBar: Category selected:', newCategory);
+  
+  // Call the parent's handler
+  setFilterCategory(newCategory);
+};
 
     return (
         <div className='search-filter-bar'>
