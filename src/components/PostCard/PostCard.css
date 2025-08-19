@@ -53,8 +53,8 @@
 
 .post-image {
   flex-shrink: 0;
-  max-width: 120px;
-  max-height: 80px;
+  max-width: 240px;
+  max-height: 200px;
   overflow: hidden;
   border-radius: 4px;
 }
