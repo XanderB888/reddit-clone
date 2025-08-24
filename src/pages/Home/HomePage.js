@@ -29,11 +29,11 @@ function HomePage() {
 
   // Handle category change and fetch from API
   const handleCategoryChange = (newCategory) => {
-    console.log('HomePage: Category changing to:', newCategory);
+    //console.log('HomePage: Category changing to:', newCategory);
     setFilterCategory(newCategory);
     
     // Dispatch to Redux
-    console.log('HomePage: Dispatching fetchPosts');
+    //console.log('HomePage: Dispatching fetchPosts');
     dispatch(fetchPosts(newCategory));
   };
 
