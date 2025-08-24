@@ -1,8 +1,253 @@
-.post-detail {
-    padding: 2rem;
-    max-width: 800px;
-    margin: auto;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) ;
+.post-detail-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.post-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.back-button {
+  background-color: #ff4500;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #e03d00;
+}
+
+.subreddit-info {
+  display: flex;
+  align-items: center;
+}
+
+.subreddit-name {
+  background-color: #ff4500;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.post-detail-content {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  overflow: hidden;
+}
+
+.post-voting {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid #e2e2e2;
+  min-width: 60px;
+}
+
+.vote-button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: #666;
+  transition: color 0.2s ease;
+}
+
+.vote-button:hover {
+  color: #ff4500;
+}
+
+.upvote:hover {
+  color: #ff8b60;
+}
+
+.downvote:hover {
+  color: #9494ff;
+}
+
+.vote-count {
+  font-weight: bold;
+  margin: 0.5rem 0;
+  color: #333;
+}
+
+.post-main {
+  flex: 1;
+  padding: 1.5rem;
+}
+
+.post-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0 0 1rem 0;
+  color: #333;
+  line-height: 1.4;
+}
+
+.post-meta {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.post-meta strong {
+  color: #ff4500;
+}
+
+.post-body {
+  margin-bottom: 2rem;
+}
+
+.post-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.post-text p {
+  margin-bottom: 1rem;
+}
+
+.post-media {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.post-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.video-link,
+.external-link {
+  display: inline-block;
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #ff4500;
+  border: 1px solid #e2e2e2;
+  transition: background-color 0.2s ease;
+}
+
+.video-link:hover,
+.external-link:hover {
+  background-color: #e9ecef;
+  text-decoration: none;
+}
+
+.post-actions {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem 0;
+  border-top: 1px solid #e2e2e2;
+  border-bottom: 1px solid #e2e2e2;
+  margin-bottom: 2rem;
+}
+
+.action-item {
+  color: #666;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.action-item:hover {
+  color: #ff4500;
+}
+
+.comments-section {
+  margin-top: 2rem;
+}
+
+.comments-section h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.comments-placeholder {
+  background-color: #f8f9fa;
+  padding: 2rem;
+  border-radius: 6px;
+  text-align: center;
+  color: #666;
+}
+
+.comments-placeholder p {
+  margin-bottom: 0.5rem;
+}
+
+.post-not-found {
+  text-align: center;
+  padding: 3rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.post-not-found h2 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.post-not-found p {
+  color: #666;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .post-detail-container {
+    padding: 0.5rem;
+  }
+  
+  .post-detail-content {
+    flex-direction: column;
+  }
+  
+  .post-voting {
+    flex-direction: row;
+    justify-content: center;
+    padding: 1rem;
+    border-right: none;
+    border-bottom: 1px solid #e2e2e2;
+  }
+  
+  .vote-count {
+    margin: 0 1rem;
+  }
+  
+  .post-title {
+    font-size: 1.4rem;
+  }
+  
+  .post-actions {
+    flex-direction: column;
+    gap: 1rem;
+  }
 }
