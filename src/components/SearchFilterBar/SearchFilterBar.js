@@ -5,8 +5,7 @@ function SearchFilterBar({ searchTerm, setSearchTerm, filterCategory, onCategory
   
   const handleCategoryChange = (e) => {
     const newCategory = e.target.value;
-    alert(`Category changed to: ${newCategory}`); // 🚨 Remove this after testing
-    console.log('🔄 SearchFilterBar: Category selected:', newCategory);
+    //console.log('🔄 SearchFilterBar: Category selected:', newCategory); //debug console.log statements used for debugging
     
     // Call the parent's handler
     onCategoryChange(newCategory);  // Changed this line
