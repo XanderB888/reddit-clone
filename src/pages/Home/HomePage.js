@@ -5,6 +5,7 @@ import Header from '../../components/Header/Header';
 import Ticker from '../../components/Ticker/Ticker';
 import SearchFilterBar from '../../components/SearchFilterBar/SearchFilterBar';
 import PostList from '../../components/PostList/PostList';
+import './HomePage.css';
 
 function HomePage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -15,7 +16,7 @@ function HomePage() {
   const { items: allPosts, status } = useSelector((state) => state.posts);
   
   // Debug: Log the current state
-  console.log('HomePage state:', { 
+  console.log('🏠 HomePage state:', { 
     postsCount: allPosts.length, 
     status, 
     filterCategory 
@@ -29,31 +30,31 @@ function HomePage() {
 
   // Handle category change and fetch from API
   const handleCategoryChange = (newCategory) => {
-    //console.log('HomePage: Category changing to:', newCategory);
+    console.log('🔄 HomePage: Category changing to:', newCategory);
     setFilterCategory(newCategory);
     
     // Dispatch to Redux
-    //console.log('HomePage: Dispatching fetchPosts');
+    console.log('🚀 HomePage: Dispatching fetchPosts');
     dispatch(fetchPosts(newCategory));
   };
 
   return (
-    <>
+    <div className="homepage-container">
       <Header />
       <Ticker />
-      <main style={{ padding: '2rem' }}>
+      <main className="main-content">
         <SearchFilterBar
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           filterCategory={filterCategory}
-          onCategoryChange={handleCategoryChange}  // Changed this line
+          onCategoryChange={handleCategoryChange}
         />
         <PostList
           posts={filteredPosts}
           status={status}
         />
       </main>
-    </>
+    </div>
   );
 }
 

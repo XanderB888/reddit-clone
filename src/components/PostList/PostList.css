@@ -1,6 +1,32 @@
 .post-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
+  max-width: 800px; 
+  margin: 0 auto; /* Center the content */
+  padding: 0 1rem; 
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Loading and error states */
+.post-list p {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .post-list {
+    padding: 0 0.5rem; /* Less padding on mobile */
+    max-width: 100%; /* Full width on mobile */
+  }
+}
+
+/* Tablet responsiveness */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .post-list {
+    max-width: 700px; /* Slightly smaller on tablets */
+    padding: 0 1.5rem;
+  }
 }
