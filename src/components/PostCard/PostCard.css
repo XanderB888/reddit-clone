@@ -87,13 +87,18 @@
   width: 100%;
   cursor: pointer;
   overflow: hidden;
+  max-height: 400px; /* Limit the height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa;
 }
 
 .post-main-image {
   width: 100%;
   height: auto;
-  max-height: 600px;
-  object-fit: cover;
+  max-height: 400px; /* Match container height */
+  object-fit: contain; /* Changed from cover to contain */
   display: block;
   transition: transform 0.2s ease;
 }
@@ -183,6 +188,14 @@
   .post-text-preview {
     padding: 0 12px 10px 12px;
     font-size: 13px;
+  }
+
+  .post-image-container {
+    max-height: 300px; /* Smaller on mobile */
+  }
+
+  .post-main-image {
+    max-height: 300px; /* Smaller on mobile */
   }
 
   .post-actions {
