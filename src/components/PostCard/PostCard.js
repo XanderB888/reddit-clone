@@ -5,6 +5,25 @@ import './PostCard.css';
 function PostCard({ post }) {
   const navigate = useNavigate();
 
+  // Helper function to get video preview/poster image
+  const getVideoPoster = () => {
+    // Try to get a good preview image for video
+    if (post.preview && post.preview.images && post.preview.images[0]) {
+      return post.preview.images[0].source.url.replace(/&amp;/g, '&');
+    }
+    
+    // Fall back to thumbnail
+    if (post.thumbnail && 
+        post.thumbnail !== 'self' && 
+        post.thumbnail !== 'default' && 
+        post.thumbnail !== 'nsfw' &&
+        post.thumbnail.startsWith('http')) {
+      return post.thumbnail;
+    }
+    
+    return null;
+  };
+
   // Helper function to check if it's a video post
   const getVideoUrl = () => {
     // Reddit video posts
