@@ -5,7 +5,6 @@ import Header from '../../components/Header/Header';
 import Ticker from '../../components/Ticker/Ticker';
 import SearchFilterBar from '../../components/SearchFilterBar/SearchFilterBar';
 import PostList from '../../components/PostList/PostList';
-import './HomePage.css';
 
 function HomePage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -40,15 +39,14 @@ function HomePage() {
 
   return (
     <div className="homepage-container">
-      <Header />
+      <Header 
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        filterCategory={filterCategory}
+        onCategoryChange={handleCategoryChange}
+      />
       <Ticker />
       <main className="main-content">
-        <SearchFilterBar
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          filterCategory={filterCategory}
-          onCategoryChange={handleCategoryChange}
-        />
         <PostList
           posts={filteredPosts}
           status={status}
