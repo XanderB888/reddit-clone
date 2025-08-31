@@ -147,6 +147,6 @@ const postsSlice = createSlice({
   }
 });
 
-export const { setPosts } = postsSlice.actions;
-export { loadMorePosts }; // Export the new action
+export const { setPosts, clearSearch } = postsSlice.actions;
+export { loadMorePosts, searchPosts }; // Export the new actions
 export default postsSlice.reducer;
