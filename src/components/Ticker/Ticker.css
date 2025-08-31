@@ -7,6 +7,9 @@
   display: flex;
   align-items: center;
   position: relative;
+  position: sticky;
+  top: 67.75px;
+  z-index: 99;
 }
 
 .ticker-content {
