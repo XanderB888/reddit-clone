@@ -104,7 +104,7 @@ const postsSlice = createSlice({
       .addCase(loadMorePosts.fulfilled, (state, action) => {
         console.log('📄 Redux: loadMorePosts.fulfilled - got', action.payload.posts.length, 'more posts');
         state.loadMoreStatus = 'succeeded';
-        state.items = [...state.items, ...action.payload.posts]; 
+        state.items = [...state.items, ...action.payload.posts]; // Append new posts
         state.after = action.payload.after;
         state.hasMore = action.payload.after !== null;
       })
@@ -116,5 +116,5 @@ const postsSlice = createSlice({
 });
 
 export const { setPosts } = postsSlice.actions;
-//export { loadMorePosts }; 
+export { loadMorePosts }; // Export the new action
 export default postsSlice.reducer;
