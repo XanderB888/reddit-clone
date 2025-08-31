@@ -5,8 +5,31 @@ import './PostCard.css';
 function PostCard({ post }) {
   const navigate = useNavigate();
 
+  // Helper function to check if it's a video post
+  const getVideoUrl = () => {
+    // Reddit video posts
+    if (post.media && post.media.reddit_video) {
+      return post.media.reddit_video.fallback_url;
+    }
+    
+    // v.redd.it videos
+    if (post.url && post.url.includes('v.redd.it')) {
+      return post.url;
+    }
+    
+    // GIF posts (treated as videos)
+    if (post.url && post.url.includes('.gif')) {
+      return post.url;
+    }
+    
+    return null;
+  };
+
   // Helper function to get the best image URL
   const getImageUrl = () => {
+    // Don't show image if it's a video
+    if (getVideoUrl()) return null;
+    
     // Check if there's a preview image
     if (post.preview && post.preview.images && post.preview.images[0]) {
       return post.preview.images[0].source.url.replace(/&amp;/g, '&');
@@ -24,7 +47,7 @@ function PostCard({ post }) {
     // If it's an image URL, use it directly
     if (post.url && (post.url.includes('i.redd.it') || 
                      post.url.includes('imgur.com') ||
-                     post.url.match(/\.(jpg|jpeg|png|gif)$/i))) {
+                     post.url.match(/\.(jpg|jpeg|png)$/i))) {
       return post.url;
     }
     
