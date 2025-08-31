@@ -1,27 +1,124 @@
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 2rem;
-    background-color: #ff4500;
-    color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background-color: #ff4500;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
-    font-weight: bold;
-    font-size: 1.5rem;
+  font-weight: bold;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  cursor: pointer;
 }
 
-.search {
-    flex: 1;
-    margin: 0 1.5rem;
-    padding: 0.5rem;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 2rem;
+}
+
+.header-search-bar {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: none;
+  font-size: 1rem;
+  outline: none;
+  max-width: 400px;
+}
+
+.header-search-bar::placeholder {
+  color: #999;
+}
+
+.header-search-bar:focus {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+.header-filter-dropdown {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: none;
+  font-size: 0.9rem;
+  outline: none;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+  min-width: 140px;
+}
+
+.header-filter-dropdown:focus {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+.header-menu {
+  flex-shrink: 0;
 }
 
 .menu-icon {
-    font-size: 1.8rem;
-    cursor: pointer;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.menu-icon:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .header {
+    padding: 0.5rem 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .header-controls {
+    order: 3;
+    width: 100%;
+    margin: 0.5rem 0 0 0;
+    gap: 0.5rem;
+  }
+
+  .header-search-bar {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .header-filter-dropdown {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+    min-width: 110px;
+  }
+
+  .logo {
+    font-size: 1.3rem;
+  }
+
+  .menu-icon {
+    font-size: 1.3rem;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+  .header-controls {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .header-search-bar,
+  .header-filter-dropdown {
+    width: 100%;
+  }
 }
