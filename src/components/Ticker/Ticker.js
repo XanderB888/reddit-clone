@@ -9,17 +9,18 @@ function Ticker() {
     { id: 'loading2', title: 'Fetching trending posts from Reddit', subreddit: 'please wait', isLoading: true },
     { id: 'loading3', title: 'Almost ready with fresh content!', subreddit: 'loading', isLoading: true },
   ]);
-  const [isLoadingReal, setIsLoadingReal] = useState(true);
+  const [realPosts, setRealPosts] = useState([]);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [showReal, setShowReal] = useState(false);
 
   useEffect(() => {
-    // Start fetching immediately but don't block UI
     fetchTickerPosts();
   }, []);
 
   const fetchTickerPosts = async () => {
     try {
-      // Small delay to let the loading messages show
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Let loading messages show for a bit
+      await new Promise(resolve => setTimeout(resolve, 3000));
       
       const subreddits = ['showerthoughts', 'todayilearned', 'mildlyinteresting', 'lifeprotips', 'askreddit'];
       const randomSubreddit = subreddits[Math.floor(Math.random() * subreddits.length)];
@@ -40,30 +41,48 @@ function Ticker() {
         isLoading: false
       }));
 
-      setTickerPosts(posts);
-      setIsLoadingReal(false);
+      // Start the smooth transition
+      setRealPosts(posts);
+      setIsTransitioning(true);
+      
+      // After a short delay, complete the transition
+      setTimeout(() => {
+        setTickerPosts(posts);
+        setShowReal(true);
+        setIsTransitioning(false);
+      }, 500);
+
     } catch (error) {
       console.error('Ticker fetch error:', error.message);
-      // Fallback to static content on error
-      setTickerPosts([
+      // Smooth transition to fallback content
+      const fallbackPosts = [
         { id: 'f1', title: 'Cool cat memes are trending today', subreddit: 'funny' },
         { id: 'f2', title: 'Shooting with a .50 calibre rifle safety tips', subreddit: 'videos' },
         { id: 'f3', title: 'Making microwave cake in 5 mins... what?!', subreddit: 'food' },
         { id: 'f4', title: "What's a lifehack that isn't obvious?", subreddit: 'AskReddit' },
         { id: 'f5', title: 'Just finished FarCry 4! All time favourite game!', subreddit: 'gaming' },
         { id: 'f6', title: 'Scrolling effects are super fun!', subreddit: 'webdev' },
-      ]);
-      setIsLoadingReal(false);
+      ];
+      
+      setRealPosts(fallbackPosts);
+      setIsTransitioning(true);
+      
+      setTimeout(() => {
+        setTickerPosts(fallbackPosts);
+        setShowReal(true);
+        setIsTransitioning(false);
+      }, 500);
     }
   };
 
   return (
     <div className="ticker-container">
-      <div className="ticker-content">
+      {/* Loading posts - fade out during transition */}
+      <div className={`ticker-content ${isTransitioning ? 'fading-out' : ''} ${showReal ? 'hidden' : ''}`}>
         {[...tickerPosts, ...tickerPosts].map((post, index) => (
           <div 
             className={`ticker-item ${post.isLoading ? 'loading-item' : ''}`} 
-            key={`${post.id}-${index}`}
+            key={`loading-${post.id}-${index}`}
           >
             <span className="ticker-post-title">{post.title}</span>
             <span className={`ticker-subreddit ${post.isLoading ? 'loading-subreddit' : ''}`}>
@@ -72,9 +91,20 @@ function Ticker() {
           </div>
         ))}
       </div>
+
+      {/* Real posts - fade in during transition */}
+      {realPosts.length > 0 && (
+        <div className={`ticker-content real-content ${isTransitioning ? 'fading-in' : ''} ${showReal ? 'visible' : ''}`}>
+          {[...realPosts, ...realPosts].map((post, index) => (
+            <div className="ticker-item" key={`real-${post.id}-${index}`}>
+              <span className="ticker-post-title">{post.title}</span>
+              <span className="ticker-subreddit">r/{post.subreddit}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
 
 export default Ticker;
-
