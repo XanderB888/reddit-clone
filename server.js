@@ -39,10 +39,10 @@ async function getAccessToken() {
     currentAccessToken = response.data.access_token;
     tokenExpiry = Date.now() + (50 * 60 * 1000);
     
-    console.log('Got fresh access token');
+    console.log('🔑 Got fresh access token');
     return currentAccessToken;
   } catch (error) {
-    console.error('Error getting access token:', error.response?.data || error.message);
+    console.error('❌ Error getting access token:', error.response?.data || error.message);
     throw error;
   }
 }
@@ -86,7 +86,7 @@ app.get('/auth/reddit/callback', async (req, res) => {
       }
     );
 
-    console.log('Tokens:', response.data);
+    console.log('✅ Tokens:', response.data);
     res.send('Authorization successful! Check your terminal for tokens.');
   } catch (error) {
     console.error('OAuth Error:', error.response?.data || error.message);
@@ -97,6 +97,7 @@ app.get('/auth/reddit/callback', async (req, res) => {
 // API routes
 app.get('/api/posts', async (req, res) => {
   try {
+    const { after, limit = 25 } = req.query;
     const accessToken = await getAccessToken();
 
     const response = await axios.get('https://oauth.reddit.com/r/popular/hot', {
@@ -105,7 +106,8 @@ app.get('/api/posts', async (req, res) => {
         'User-Agent': 'ReddeX:v1.0 (by /u/General_WickedSnail)'
       },
       params: {
-        limit: 25
+        limit: parseInt(limit),
+        after: after || undefined
       }
     });
 
@@ -124,10 +126,14 @@ app.get('/api/posts', async (req, res) => {
       preview: child.data.preview || null
     }));
 
-    console.log(`Fetched ${posts.length} posts from r/popular`);
-    res.json(posts);
+    console.log(`📥 Fetched ${posts.length} posts from r/popular`);
+    
+    res.json({
+      posts: posts,
+      after: response.data.data.after // Next page token
+    });
   } catch (error) {
-    console.error('Error fetching posts:', error.response?.data || error.message);
+    console.error('❌ Error fetching posts:', error.response?.data || error.message);
     res.status(500).json({ error: 'Failed to load posts' });
   }
 });
@@ -135,6 +141,7 @@ app.get('/api/posts', async (req, res) => {
 app.get('/api/posts/:subreddit', async (req, res) => {
   try {
     const subreddit = req.params.subreddit;
+    const { after, limit = 25 } = req.query;
     const accessToken = await getAccessToken();
 
     const response = await axios.get(`https://oauth.reddit.com/r/${subreddit}/hot`, {
@@ -143,7 +150,8 @@ app.get('/api/posts/:subreddit', async (req, res) => {
         'User-Agent': 'ReddeX:v1.0 (by /u/General_WickedSnail)'
       },
       params: {
-        limit: 25
+        limit: parseInt(limit),
+        after: after || undefined
       }
     });
 
@@ -162,10 +170,14 @@ app.get('/api/posts/:subreddit', async (req, res) => {
       preview: child.data.preview || null
     }));
 
-    console.log(`Fetched ${posts.length} posts from r/${subreddit}`);
-    res.json(posts);
+    console.log(`📥 Fetched ${posts.length} posts from r/${subreddit}`);
+    
+    res.json({
+      posts: posts,
+      after: response.data.data.after // Next page token
+    });
   } catch (error) {
-    console.error('Error fetching posts:', error.response?.data || error.message);
+    console.error('❌ Error fetching posts:', error.response?.data || error.message);
     res.status(500).json({ error: 'Failed to load posts' });
   }
 });
