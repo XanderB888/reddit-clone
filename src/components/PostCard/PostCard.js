@@ -92,6 +92,10 @@ function PostCard({ post }) {
 
   const imageUrl = getImageUrl();
   const videoUrl = getVideoUrl();
+  const posterUrl = getVideoPoster();
+
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [showPoster, setShowPoster] = useState(true);
 
   return (
     <div className="post-card">
