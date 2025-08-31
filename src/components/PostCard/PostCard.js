@@ -72,6 +72,7 @@ function PostCard({ post }) {
   };
 
   const imageUrl = getImageUrl();
+  const videoUrl = getVideoUrl();
 
   return (
     <div className="post-card">
@@ -101,8 +102,26 @@ function PostCard({ post }) {
         </div>
       )}
 
-      {/* Post image */}
-      {imageUrl && (
+      {/* Video content */}
+      {videoUrl && (
+        <div className="post-video-container">
+          <video 
+            className="post-video" 
+            controls
+            preload="metadata"
+            poster={imageUrl || post.thumbnail}
+          >
+            <source src={videoUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div className="video-overlay">
+            <span className="video-indicator">📹 Video</span>
+          </div>
+        </div>
+      )}
+
+      {/* Post image (only if no video) */}
+      {!videoUrl && imageUrl && (
         <div 
           className="post-image-container"
           onClick={() => navigate(`/post/${post.id}`, { state: { post } })}
@@ -115,6 +134,15 @@ function PostCard({ post }) {
               e.target.style.display = 'none';
             }}
           />
+        </div>
+      )}
+
+      {/* External link preview (if no image or video) */}
+      {!videoUrl && !imageUrl && post.url && !post.url.includes('reddit.com') && (
+        <div className="external-link-preview">
+          <a href={post.url} target="_blank" rel="noopener noreferrer" className="external-link">
+            🔗 {post.url.replace(/^https?:\/\//, '').split('/')[0]}
+          </a>
         </div>
       )}
 
