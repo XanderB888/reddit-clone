@@ -182,4 +182,57 @@ app.get('/api/posts/:subreddit', async (req, res) => {
   }
 });
 
+// Search endpoint
+app.get('/api/search', async (req, res) => {
+  try {
+    const { q, limit = 25, after } = req.query;
+    
+    if (!q || q.trim().length === 0) {
+      return res.status(400).json({ error: 'Search query is required' });
+    }
+
+    const accessToken = await getAccessToken();
+
+    const response = await axios.get('https://oauth.reddit.com/search', {
+      headers: {
+        'Authorization': `bearer ${accessToken}`,
+        'User-Agent': 'ReddeX:v1.0 (by /u/General_WickedSnail)'
+      },
+      params: {
+        q: q.trim(),
+        type: 'link',
+        sort: 'relevance',
+        limit: parseInt(limit),
+        after: after || undefined
+      }
+    });
+
+    const posts = response.data.data.children.map((child) => ({
+      id: child.data.id,
+      title: child.data.title,
+      subreddit: child.data.subreddit,
+      author: child.data.author,
+      comments: child.data.num_comments,
+      score: child.data.score,
+      thumbnail: child.data.thumbnail !== 'self' && child.data.thumbnail !== 'default' 
+        ? child.data.thumbnail : null,
+      url: child.data.url,
+      selftext: child.data.selftext,
+      created_utc: child.data.created_utc,
+      preview: child.data.preview || null
+    }));
+
+    console.log(`🔍 Search for "${q}" returned ${posts.length} posts`);
+    
+    res.json({
+      posts: posts,
+      after: response.data.data.after,
+      query: q.trim()
+    });
+  } catch (error) {
+    console.error('❌ Error searching posts:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Failed to search posts' });
+  }
+});
+
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
