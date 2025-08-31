@@ -4,6 +4,30 @@ import axios from 'axios';
 // Debug message to confirm file loads
 console.log('🚨 POSTSLICE LOADED - This should show when the page loads');
 
+// Search posts across all of Reddit
+export const searchPosts = createAsyncThunk(
+  'posts/searchPosts',
+  async ({ query, after = '' }) => {
+    console.log('🔍 STARTING searchPosts with query:', query);
+    
+    const response = await axios.get(`http://localhost:5000/api/search`, {
+      params: {
+        q: query,
+        after: after,
+        limit: 25
+      }
+    });
+    
+    console.log('✅ searchPosts SUCCESS! Got', response.data.posts.length, 'results');
+    return {
+      posts: response.data.posts,
+      after: response.data.after,
+      query: response.data.query
+    };
+  }
+);
+
+// Fetch posts from specific subreddit or popular
 export const fetchPosts = createAsyncThunk(
   'posts/fetchPosts',
   async ({ subreddit = '', after = '' }) => {
@@ -18,14 +42,14 @@ export const fetchPosts = createAsyncThunk(
     try {
       const response = await axios.get(url, {
         params: {
-          after: after, // Reddit pagination parameter
+          after: after,
           limit: 25
         }
       });
       console.log('✅ fetchPosts SUCCESS! Got', response.data.posts.length, 'posts');
       return {
         posts: response.data.posts,
-        after: response.data.after // Next page token from Reddit
+        after: response.data.after
       };
     } catch (error) {
       console.error('❌ fetchPosts ERROR:', error.response?.status);
@@ -36,6 +60,7 @@ export const fetchPosts = createAsyncThunk(
   }
 );
 
+// Load more posts (pagination)
 export const loadMorePosts = createAsyncThunk(
   'posts/loadMorePosts', 
   async ({ subreddit = '', after }) => {
@@ -148,5 +173,4 @@ const postsSlice = createSlice({
 });
 
 export const { setPosts, clearSearch } = postsSlice.actions;
-export { loadMorePosts, searchPosts }; // Export the new actions
 export default postsSlice.reducer;
