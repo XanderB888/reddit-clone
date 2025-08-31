@@ -100,6 +100,18 @@
   }
 }
 
+.ticker-refresh-indicator {
+  position: absolute;
+  top: 2px;
+  right: 10px;
+  font-size: 0.7rem;
+  color: #666;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 0.2rem 0.5rem;
+  border-radius: 10px;
+  z-index: 10;
+}
+
 /* Pause animation on hover for better readability */
 .ticker-container:hover .ticker-content {
   animation-play-state: paused;
