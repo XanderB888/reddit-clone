@@ -1,29 +1,106 @@
 .ticker-container {
-    overflow: hidden;
-    background-color: #f6f7f8;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
+  background-color: #f6f7f8;
+  border-bottom: 1px solid #e2e2e2;
+  border-top: 1px solid #e2e2e2;
+  overflow: hidden;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  position: relative;
 }
 
-.ticker {
-    display: inline-block;
-    white-space: nowrap;
-    animation: scroll 25s linear infinite;
-    padding: 0.5rem;
+.ticker-content {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: scroll 45s linear infinite;
+  gap: 3rem;
 }
 
 .ticker-item {
-    display: inline-block;
-    margin-right: 3rem;
-    font-size: 0.95rem;
-    color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  padding: 0.5rem 1rem;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e2e2;
+  font-size: 0.85rem;
+  transition: transform 0.2s ease;
+}
+
+.ticker-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.ticker-post-title {
+  color: #1a1a1b;
+  font-weight: 500;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ticker-subreddit {
+  color: #ff4500;
+  font-weight: 600;
+  font-size: 0.75rem;
+  background-color: #fff4f0;
+  padding: 0.2rem 0.5rem;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.ticker-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 60px;
+  color: #666;
+  font-size: 0.9rem;
+  font-style: italic;
 }
 
 @keyframes scroll {
-    0% {
-        transform: translateX(100%);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .ticker-container {
+    height: 50px;
+  }
+
+  .ticker-item {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .ticker-post-title {
+    max-width: 200px;
+  }
+
+  .ticker-subreddit {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.4rem;
+  }
+
+  .ticker-content {
+    animation: scroll 35s linear infinite;
+    gap: 2rem;
+  }
+}
+
+/* Pause animation on hover for better readability */
+.ticker-container:hover .ticker-content {
+  animation-play-state: paused;
 }
