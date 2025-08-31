@@ -100,6 +100,26 @@
   }
 }
 
+.loading-item {
+  background: linear-gradient(90deg, #f0f0f0, #e0e0e0, #f0f0f0);
+  border: 1px solid #d0d0d0;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+.loading-subreddit {
+  background-color: #e0e0e0 !important;
+  color: #888 !important;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: 200px 0;
+  }
+}
+
 .ticker-refresh-indicator {
   position: absolute;
   top: 2px;
