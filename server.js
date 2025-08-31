@@ -223,7 +223,9 @@ app.get('/api/search', async (req, res) => {
       url: child.data.url,
       selftext: child.data.selftext,
       created_utc: child.data.created_utc,
-      preview: child.data.preview || null
+      preview: child.data.preview || null,
+      media: child.data.media || null,
+      is_video: child.data.is_video || false
     }));
 
     console.log(`🔍 Search for "${q}" returned ${posts.length} posts`);
