@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchPosts } from '../../features/posts/postsSlice';
 import Header from '../../components/Header/Header';
 import Ticker from '../../components/Ticker/Ticker';
-import SearchFilterBar from '../../components/SearchFilterBar/SearchFilterBar';
 import PostList from '../../components/PostList/PostList';
+import './HomePage.css';
 
 function HomePage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -12,20 +12,19 @@ function HomePage() {
   const dispatch = useDispatch();
   
   // Get posts from Redux store
-  const { items: allPosts, status } = useSelector((state) => state.posts);
+  const { items: allPosts, status, isSearchMode, currentQuery } = useSelector((state) => state.posts);
   
   // Debug: Log the current state
   console.log('🏠 HomePage state:', { 
     postsCount: allPosts.length, 
     status, 
-    filterCategory 
+    filterCategory,
+    isSearchMode,
+    currentQuery
   });
   
-  // Filter posts based on search term only (not category, since we fetch by category)
-  const filteredPosts = allPosts.filter((post) => {
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesSearch;
-  });
+  // No local filtering needed - posts come from Redux already filtered
+  const displayPosts = allPosts;
 
   // Handle category change and fetch from API
   const handleCategoryChange = (newCategory) => {
@@ -34,7 +33,7 @@ function HomePage() {
     
     // Dispatch to Redux
     console.log('🚀 HomePage: Dispatching fetchPosts');
-    dispatch(fetchPosts(newCategory));
+    dispatch(fetchPosts({ subreddit: newCategory }));
   };
 
   return (
@@ -47,8 +46,15 @@ function HomePage() {
       />
       <Ticker />
       <main className="main-content">
+        {/* Show search info */}
+        {isSearchMode && currentQuery && (
+          <div className="search-info">
+            <p>Search results for: <strong>"{currentQuery}"</strong></p>
+          </div>
+        )}
+        
         <PostList
-          posts={filteredPosts}
+          posts={displayPosts}
           status={status}
         />
       </main>
@@ -57,3 +63,4 @@ function HomePage() {
 }
 
 export default HomePage;
+
