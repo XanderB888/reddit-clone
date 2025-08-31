@@ -123,7 +123,9 @@ app.get('/api/posts', async (req, res) => {
       url: child.data.url,
       selftext: child.data.selftext,
       created_utc: child.data.created_utc,
-      preview: child.data.preview || null
+      preview: child.data.preview || null,
+      media: child.data.media || null,
+      is_video: child.data.is_video || false
     }));
 
     console.log(`📥 Fetched ${posts.length} posts from r/popular`);
