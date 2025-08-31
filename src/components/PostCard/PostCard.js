@@ -128,18 +128,55 @@ function PostCard({ post }) {
       {/* Video content */}
       {videoUrl && (
         <div className="post-video-container">
+          {/* Show poster image initially */}
+          {showPoster && posterUrl && (
+            <div 
+              className="video-poster-overlay"
+              onClick={() => setShowPoster(false)}
+            >
+              <img 
+                src={posterUrl} 
+                alt={post.title}
+                className="video-poster-image"
+              />
+              <div className="video-play-button">
+                <div className="play-icon">▶️</div>
+                <span>Play Video</span>
+              </div>
+              <div className="video-overlay">
+                <span className="video-indicator">📹 Video</span>
+              </div>
+            </div>
+          )}
+          
+          {/* Actual video element */}
           <video 
-            className="post-video" 
-            controls
+            className={`post-video ${showPoster ? 'hidden-video' : ''}`}
+            controls={!showPoster}
             preload="metadata"
-            poster={imageUrl || post.thumbnail}
+            poster={posterUrl}
+            onLoadedData={() => setVideoLoaded(true)}
+            onPlay={() => setShowPoster(false)}
           >
             <source src={videoUrl} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <div className="video-overlay">
-            <span className="video-indicator">📹 Video</span>
-          </div>
+          
+          {/* Fallback if no poster available */}
+          {showPoster && !posterUrl && (
+            <div 
+              className="video-no-poster"
+              onClick={() => setShowPoster(false)}
+            >
+              <div className="video-play-button">
+                <div className="play-icon">▶️</div>
+                <span>Play Video</span>
+              </div>
+              <div className="video-overlay">
+                <span className="video-indicator">📹 Video</span>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
