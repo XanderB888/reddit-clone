@@ -116,5 +116,5 @@ const postsSlice = createSlice({
 });
 
 export const { setPosts } = postsSlice.actions;
-export { loadMorePosts }; 
+//export { loadMorePosts }; 
 export default postsSlice.reducer;
