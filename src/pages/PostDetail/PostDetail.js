@@ -107,7 +107,7 @@ function PostDetail() {
     <div className="post-detail-container">
       {/* Header with back button */}
       <div className="post-detail-header">
-        <button onClick={handleBackClick} className="back-button">
+        <button onClick={() => navigate('/')} className="back-button">
           ← Back to Home
         </button>
         <div className="subreddit-info">
