@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import './PostDetail.css';
 
@@ -7,6 +7,9 @@ function PostDetail() {
   const location = useLocation();
   const navigate = useNavigate();
   const post = location.state?.post;
+  
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [showPoster, setShowPoster] = useState(true);
 
   if (!post) {
     return (
@@ -22,8 +25,45 @@ function PostDetail() {
     );
   }
 
+  // Helper function to check if it's a video post
+  const getVideoUrl = () => {
+    if (post.media && post.media.reddit_video) {
+      return post.media.reddit_video.fallback_url;
+    }
+    
+    if (post.url && post.url.includes('v.redd.it')) {
+      return post.url;
+    }
+    
+    if (post.url && post.url.includes('.gif')) {
+      return post.url;
+    }
+    
+    return null;
+  };
+
+  // Helper function to get video preview/poster image
+  const getVideoPoster = () => {
+    if (post.preview && post.preview.images && post.preview.images[0]) {
+      return post.preview.images[0].source.url.replace(/&amp;/g, '&');
+    }
+    
+    if (post.thumbnail && 
+        post.thumbnail !== 'self' && 
+        post.thumbnail !== 'default' && 
+        post.thumbnail !== 'nsfw' &&
+        post.thumbnail.startsWith('http')) {
+      return post.thumbnail;
+    }
+    
+    return null;
+  };
+
   // Helper function to get the best image URL
   const getImageUrl = () => {
+    // Don't show image if it's a video
+    if (getVideoUrl()) return null;
+    
     if (post.preview && post.preview.images && post.preview.images[0]) {
       return post.preview.images[0].source.url.replace(/&amp;/g, '&');
     }
@@ -38,7 +78,7 @@ function PostDetail() {
     
     if (post.url && (post.url.includes('i.redd.it') || 
                      post.url.includes('imgur.com') ||
-                     post.url.match(/\.(jpg|jpeg|png|gif)$/i))) {
+                     post.url.match(/\.(jpg|jpeg|png)$/i))) {
       return post.url;
     }
     
@@ -58,7 +98,9 @@ function PostDetail() {
   };
 
   const imageUrl = getImageUrl();
-  const isVideoPost = post.url && (post.url.includes('youtube.com') || post.url.includes('youtu.be'));
+  const videoUrl = getVideoUrl();
+  const posterUrl = getVideoPoster();
+  const isVideoPost = !!videoUrl;
   const isExternalLink = post.url && !imageUrl && !isVideoPost;
 
   return (
@@ -99,19 +141,59 @@ function PostDetail() {
               </div>
             )}
 
-            {/* Image content */}
-            {imageUrl && (
-              <div className="post-media">
-                <img src={imageUrl} alt={post.title} className="post-image" />
+            {/* Video content */}
+            {isVideoPost && (
+              <div className="post-detail-video-container">
+                {/* Show poster image initially */}
+                {showPoster && posterUrl && (
+                  <div 
+                    className="video-poster-overlay"
+                    onClick={() => setShowPoster(false)}
+                  >
+                    <img 
+                      src={posterUrl} 
+                      alt={post.title}
+                      className="video-poster-image"
+                    />
+                    <div className="video-play-button">
+                      <div className="play-icon">▶️</div>
+                      <span>Play Video</span>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Actual video element */}
+                <video 
+                  className={`post-detail-video ${showPoster ? 'hidden-video' : ''}`}
+                  controls={!showPoster}
+                  preload="metadata"
+                  poster={posterUrl}
+                  onLoadedData={() => setVideoLoaded(true)}
+                  onPlay={() => setShowPoster(false)}
+                >
+                  <source src={videoUrl} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                
+                {/* Fallback if no poster available */}
+                {showPoster && !posterUrl && (
+                  <div 
+                    className="video-no-poster"
+                    onClick={() => setShowPoster(false)}
+                  >
+                    <div className="video-play-button">
+                      <div className="play-icon">▶️</div>
+                      <span>Play Video</span>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
-            {/* Video content */}
-            {isVideoPost && (
+            {/* Image content */}
+            {!isVideoPost && imageUrl && (
               <div className="post-media">
-                <a href={post.url} target="_blank" rel="noopener noreferrer" className="video-link">
-                  🎥 Watch Video: {post.url}
-                </a>
+                <img src={imageUrl} alt={post.title} className="post-image" />
               </div>
             )}
 
