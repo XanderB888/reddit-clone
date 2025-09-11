@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { searchPosts, clearSearch } from '../../features/posts/postsSlice';
 import './Header.css';
@@ -11,6 +11,8 @@ function Header({
 }) {
   const dispatch = useDispatch();
   const [searchTimeout, setSearchTimeout] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef(null);
 
   // Debounced search effect
   useEffect(() => {
@@ -46,6 +48,20 @@ function Header({
     };
   }, [searchTerm, dispatch]);
 
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const handleCategoryChange = (e) => {
     const newCategory = e.target.value;
     console.log('🔄 Header: Category selected:', newCategory);
@@ -66,6 +82,45 @@ function Header({
     // If user clears search, immediately clear results
     if (value.trim() === '') {
       dispatch(clearSearch());
+    }
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleMenuItemClick = (action) => {
+    console.log('Menu item clicked:', action);
+    setIsMenuOpen(false); // Close menu after clicking
+    
+    // Handle different menu actions
+    switch (action) {
+      case 'profile':
+        // Navigate to profile or handle profile logic
+        console.log('Navigate to profile');
+        break;
+      case 'settings':
+        // Navigate to settings or handle settings logic
+        console.log('Open settings');
+        break;
+      case 'saved':
+        // Navigate to saved posts
+        console.log('Navigate to saved posts');
+        break;
+      case 'history':
+        // Navigate to history
+        console.log('Navigate to history');
+        break;
+      case 'about':
+        // Navigate to about page
+        console.log('Navigate to about');
+        break;
+      case 'logout':
+        // Handle logout logic
+        console.log('Logout user');
+        break;
+      default:
+        break;
     }
   };
 
@@ -99,8 +154,35 @@ function Header({
         </select>
       </div>
       
-      <div className="header-menu">
-        <div className="menu-icon">☰</div>
+      <div className="header-menu" ref={menuRef}>
+        <div className="menu-icon" onClick={toggleMenu}>
+          ☰
+        </div>
+        
+        {isMenuOpen && (
+          <div className="menu-dropdown">
+            <div className="menu-item" onClick={() => handleMenuItemClick('profile')}>
+              👤 My Profile
+            </div>
+            <div className="menu-item" onClick={() => handleMenuItemClick('saved')}>
+              🔖 Saved Posts
+            </div>
+            <div className="menu-item" onClick={() => handleMenuItemClick('history')}>
+              📜 History
+            </div>
+            <div className="menu-separator"></div>
+            <div className="menu-item" onClick={() => handleMenuItemClick('settings')}>
+              ⚙️ Settings
+            </div>
+            <div className="menu-item" onClick={() => handleMenuItemClick('about')}>
+              ℹ️ About
+            </div>
+            <div className="menu-separator"></div>
+            <div className="menu-item logout" onClick={() => handleMenuItemClick('logout')}>
+              🚪 Logout
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );
