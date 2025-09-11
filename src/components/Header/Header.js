@@ -91,7 +91,7 @@ function Header({
 
   const handleMenuItemClick = (action) => {
     console.log('Menu item clicked:', action);
-    setIsMenuOpen(false); // Close menu after clicking
+    setIsMenuOpen(true); // Keeps menu open whilst clicking on it, if I click anywhere else it closes. Doing this to test console.log - once done here change to false.
     
     // Handle different menu actions
     switch (action) {
