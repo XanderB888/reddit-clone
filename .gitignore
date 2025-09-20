@@ -1,0 +1,6 @@
+node_modules/
+sec.env
+.env
+.DS_Store
+build/
+dist/
