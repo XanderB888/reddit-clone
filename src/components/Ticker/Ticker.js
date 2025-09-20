@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Ticker.css';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 function Ticker() {
   const [tickerPosts, setTickerPosts] = useState([
@@ -28,7 +29,7 @@ function Ticker() {
       const randomSubreddit = subreddits[Math.floor(Math.random() * subreddits.length)];
       
       const response = await Promise.race([
-        axios.get(`http://localhost:5000/api/posts/${randomSubreddit}`, {
+        axios.get(`${API_URL}/api/posts/${randomSubreddit}`, {
           params: { limit: 8 }
         }),
         new Promise((_, reject) => 

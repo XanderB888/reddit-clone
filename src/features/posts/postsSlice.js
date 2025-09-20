@@ -1,3 +1,4 @@
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -10,7 +11,7 @@ export const searchPosts = createAsyncThunk(
   async ({ query, after = '' }) => {
     console.log('🔍 STARTING searchPosts with query:', query);
     
-    const response = await axios.get(`http://localhost:5000/api/search`, {
+    const response = await axios.get(`${API_URL}/api/search`, {
       params: {
         q: query,
         after: after,
@@ -34,8 +35,8 @@ export const fetchPosts = createAsyncThunk(
     console.log('🎯 STARTING fetchPosts with subreddit:', subreddit, 'after:', after);
     
     const url = subreddit 
-      ? `http://localhost:5000/api/posts/${subreddit}`
-      : `http://localhost:5000/api/posts`;
+      ? `${API_URL}/api/posts/${randomSubreddit}`
+      : `${API_URL}/api/search`;
     
     console.log('🌐 About to request URL:', url);
     
@@ -66,8 +67,8 @@ export const loadMorePosts = createAsyncThunk(
   async ({ subreddit = '', after }) => {
     console.log('📄 Loading more posts, after:', after);
     const url = subreddit 
-      ? `http://localhost:5000/api/posts/${subreddit}`
-      : `http://localhost:5000/api/posts`;
+      ? `${API_URL}/api/posts/${subreddit}`
+      : `${API_URL}/api/posts`;
       
     try {
       const response = await axios.get(url, {
