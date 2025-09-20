@@ -1,0 +1,77 @@
+.post-list {
+  max-width: 800px; /* Limit max width */
+  margin: 0 auto; /* Center the content */
+  padding: 0 1rem; /* Add side padding */
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Loading and error states */
+.post-list p {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Load more button */
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.load-more-button {
+  background-color: #ff4500;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 140px;
+}
+
+.load-more-button:hover:not(:disabled) {
+  background-color: #e03d00;
+  transform: translateY(-1px);
+}
+
+.load-more-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.load-more-button.loading {
+  background-color: #ff6b35;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .post-list {
+    padding: 0 0.5rem; /* Less padding on mobile */
+    max-width: 100%; /* Full width on mobile */
+  }
+
+  .load-more-container {
+    padding: 1.5rem 0.5rem;
+  }
+
+  .load-more-button {
+    padding: 10px 20px;
+    font-size: 14px;
+    min-width: 120px;
+  }
+}
+
+/* Tablet responsiveness */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .post-list {
+    max-width: 700px; /* Slightly smaller on tablets */
+    padding: 0 1.5rem;
+  }
+}
