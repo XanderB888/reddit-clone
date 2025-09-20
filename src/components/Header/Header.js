@@ -34,7 +34,9 @@ function Header({
 
     // Set new timeout for search
     const timeout = setTimeout(() => {
-      console.log('🔍 Searching for:', searchTerm);
+      if (process.env.NODE_ENV === 'development') {
+            console.log('🔍 Searching for:', searchTerm);
+            }
       dispatch(searchPosts({ query: searchTerm }));
     }, 800); // Wait 800ms after user stops typing
 
@@ -64,7 +66,9 @@ function Header({
 
   const handleCategoryChange = (e) => {
     const newCategory = e.target.value;
-    console.log('🔄 Header: Category selected:', newCategory);
+    if (process.env.NODE_ENV === 'development') {
+          console.log('🔄 Header: Category selected:', newCategory);
+          }
     
     // Clear search when changing categories
     if (searchTerm) {
@@ -90,34 +94,30 @@ function Header({
   };
 
   const handleMenuItemClick = (action) => {
-    console.log('Menu item clicked:', action);
-    setIsMenuOpen(true); // Keeps menu open whilst clicking on it, if I click anywhere else it closes. Doing this to test console.log - once done here change to false.
+    if (process.env.NODE_ENV === 'development') {
+        console.log('Menu item clicked:', action);
+          }
+    setIsMenuOpen(false); 
     
     // Handle different menu actions
     switch (action) {
       case 'profile':
         // Navigate to profile or handle profile logic
-        console.log('Navigate to profile');
         break;
       case 'settings':
         // Navigate to settings or handle settings logic
-        console.log('Open settings');
         break;
       case 'saved':
         // Navigate to saved posts
-        console.log('Navigate to saved posts');
         break;
       case 'history':
         // Navigate to history
-        console.log('Navigate to history');
         break;
       case 'about':
         // Navigate to about page
-        console.log('Navigate to about');
         break;
       case 'logout':
         // Handle logout logic
-        console.log('Logout user');
         break;
       default:
         break;
