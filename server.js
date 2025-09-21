@@ -10,9 +10,10 @@ const app = express();
 
 // CORS configuration for production
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? [process.env.FRONTEND_URL || 'https://your-app.vercel.app'] 
-    : 'http://localhost:3000',
+  origin: [
+    'http://localhost:3000', // Development
+    'https://reddit-clone-rust-eta.vercel.app' // My Vercel URL
+  ],
   credentials: true
 }));
 
