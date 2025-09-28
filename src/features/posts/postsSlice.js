@@ -35,18 +35,13 @@ export const fetchPosts = createAsyncThunk(
     console.log('🎯 STARTING fetchPosts with subreddit:', subreddit, 'after:', after);
     
     const url = subreddit 
-      ? `${API_URL}/api/posts/${randomSubreddit}`
-      : `${API_URL}/api/search`;
+      ? `${API_URL}/api/posts/${subreddit}`
+      : `${API_URL}/api/posts`;
     
     console.log('🌐 About to request URL:', url);
     
     try {
-      const response = await axios.get(url, {
-        params: {
-          after: after,
-          limit: 25
-        }
-      });
+      const response = await axios.get(url);
       console.log('✅ fetchPosts SUCCESS! Got', response.data.posts.length, 'posts');
       return {
         posts: response.data.posts,
