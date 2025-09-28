@@ -62,4 +62,6 @@ Deploys to: Vercel (reddit-clone-rust-eta.vercel.app)
 Repository: https://github.com/XanderB888/reddit-backend-clean
 Deploys to: Render (reddit-backend-clean.onrender.com)
 
+To access th final build visit "https://reddit-clone-rust-eta.vercel.app"
+
 
