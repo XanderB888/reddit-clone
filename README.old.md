@@ -52,3 +52,14 @@ git clone <https://github.com/XanderB888/reddit-clone.git>
 cd reddit-clone
 npm install
 npm start
+
+## Frotnend and Backend Directories are seperate
+- Frontend changes (cd to "~/-reddit-project/reddit-clone")
+Repository: https://github.com/XanderB888/reddit-clone
+Deploys to: Vercel (reddit-clone-rust-eta.vercel.app)
+
+-Backend changes (cd to "~/reddit-project/reddit-clone/reddit-backend-clean")
+Repository: https://github.com/XanderB888/reddit-backend-clean
+Deploys to: Render (reddit-backend-clean.onrender.com)
+
+
